@@ -181,3 +181,86 @@ section h2 {
   margin: 0;
   color: var(--color-muted);
 }
+
+/* ---------- Tag colours ---------- */
+:root {
+  --tag-lose-bg: #fde0e8;
+  --tag-gain-bg: #1a1a1a;
+  --tag-tone-bg: #f6d5ea;
+  --tag-start-bg: #e9e2f5;
+}
+
+/* ---------- Schedule (Grid) ---------- */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.day {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.day h3 {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-pink);
+  font-size: 1.15rem;
+}
+
+.class-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.class-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+}
+
+.class-time {
+  font-weight: 600;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+}
+
+.class-name {
+  font-weight: 600;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.tag-lose  { background: var(--tag-lose-bg); }
+.tag-gain  { background: var(--tag-gain-bg); color: #fff; }
+.tag-tone  { background: var(--tag-tone-bg); }
+.tag-start { background: var(--tag-start-bg); }
+
+@media (min-width: 600px) {
+  .schedule-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .schedule-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+  }
+}
