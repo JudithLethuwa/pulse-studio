@@ -1,16 +1,20 @@
-# React + Vite
+# Pulse Studio (React + Tailwind)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A fitness studio site built around personal journeys: lose weight, build muscle, tone and strengthen, or get started. Rebuilt from my Assignment 1 HTML/CSS site using React and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Features
+- Components: Header, Hero, ClassesSection, TrainersSection, MembershipSection, Footer
+- All classes, trainers and plans come from data files in `src/data/` (arrays of objects)
+- Journey filter on the class grid, built with `useState`
+- Reusable controlled `SaveToggle` on every class card ("Add to my week")
+- Mobile-first Tailwind classes (unprefixed, then `sm:`, `md:`, `lg:`)
+- No horizontal scroll at 320, 768 or 1280px
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run it
+    npm install
+    npm run dev
 
-## React Compiler
+## Built with
+Vite, React, Tailwind CSS. No TypeScript, no extra libraries, data hardcoded.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Assignment 1 (plain HTML/CSS) is preserved in the `assignment-1` tag.
