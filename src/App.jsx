@@ -1,6 +1,8 @@
 import Header from './components/Header'
 import Hero from './components/Hero'
 import ClassesSection from './components/ClassesSection'
+import TrainersSection from './components/TrainersSection'
+import MembershipSection from './components/MembershipSection'
 import Footer from './components/Footer'
 
 export default function App() {
@@ -10,6 +12,8 @@ export default function App() {
       <main>
         <Hero />
         <ClassesSection />
+        <TrainersSection />
+        <MembershipSection />
       </main>
       <Footer />
     </div>
