@@ -418,3 +418,81 @@ section h2 {
   font-size: 0.75rem;
   font-weight: 600;
 }
+
+/* ---------- Footer (Flexbox) ---------- */
+.site-footer {
+  background: var(--color-ink);
+  color: #f3e9ee;
+  padding: 3rem 1.25rem 1.5rem;
+}
+
+.footer-inner {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-col {
+  flex: 1 1 220px;
+}
+
+.site-footer h2,
+.site-footer h3 {
+  color: #fff;
+  margin: 0 0 0.75rem;
+}
+
+.site-footer h2 {
+  font-size: 1.5rem;
+}
+
+.site-footer h3 {
+  font-size: 1.1rem;
+  color: var(--color-pink);
+}
+
+.site-footer p,
+.site-footer address {
+  margin: 0 0 0.5rem;
+  font-style: normal;
+}
+
+.site-footer a {
+  color: var(--color-pink);
+}
+
+.site-footer a:hover {
+  color: #fff;
+}
+
+.copyright {
+  max-width: var(--max-width);
+  margin: 2rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid #3a3a3a;
+  font-size: 0.85rem;
+  color: #b9aab1;
+}
+
+/* ---------- Overflow fixes ---------- */
+.journey-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
+
+.trainer-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+}
+
+.pricing-card {
+  flex: 1 1 min(100%, 260px);
+  min-width: 0;
+}
+
+.footer-col {
+  flex: 1 1 min(100%, 220px);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
