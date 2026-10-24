@@ -1,12 +1,26 @@
 import { useState } from 'react'
-import { classes, journeys } from '../data/classes'
+import useApi from '../hooks/useApi'
 import ClassCard from './ClassCard'
 
-const filters = [{ id: 'all', label: 'All classes' }, ...journeys]
-
 export default function ClassesSection() {
+  const { data: classes, error: classesError } = useApi('/api/classes')
+  const { data: journeys, error: journeysError } = useApi('/api/journeys')
   const [activeJourney, setActiveJourney] = useState('all')
   const [savedIds, setSavedIds] = useState([])
+
+  if (classesError || journeysError || !classes || !journeys) {
+    return (
+      <section id="classes" className="mx-auto max-w-[1100px] px-5 py-16">
+        <p className="text-muted">
+          {classesError || journeysError
+            ? 'Could not load classes.'
+            : 'Loading classes...'}
+        </p>
+      </section>
+    )
+  }
+
+  const filters = [{ id: 'all', label: 'All classes' }, ...journeys]
 
   const visibleClasses =
     activeJourney === 'all'
@@ -67,6 +81,7 @@ export default function ClassesSection() {
           <ClassCard
             key={item.id}
             item={item}
+            journey={journeys.find((j) => j.id === item.journey)}
             saved={savedIds.includes(item.id)}
             onToggleSaved={() => toggleSaved(item.id)}
           />

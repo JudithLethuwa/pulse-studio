@@ -1,7 +1,21 @@
-import { trainers } from '../data/trainers'
-import { journeys } from '../data/classes'
+import useApi from '../hooks/useApi'
 
 export default function TrainersSection() {
+  const { data: trainers, error: trainersError } = useApi('/api/trainers')
+  const { data: journeys, error: journeysError } = useApi('/api/journeys')
+
+  if (trainersError || journeysError || !trainers || !journeys) {
+    return (
+      <section id="trainers" className="mx-auto max-w-[1100px] px-5 py-16">
+        <p className="text-muted">
+          {trainersError || journeysError
+            ? 'Could not load trainers.'
+            : 'Loading trainers...'}
+        </p>
+      </section>
+    )
+  }
+
   return (
     <section
       id="trainers"

@@ -1,9 +1,6 @@
-import { journeys } from '../data/classes'
 import SaveToggle from './SaveToggle'
 
-export default function ClassCard({ item, saved, onToggleSaved }) {
-  const journey = journeys.find((j) => j.id === item.journey)
-
+export default function ClassCard({ item, journey, saved, onToggleSaved }) {
   return (
     <li className="flex flex-col gap-3 rounded-2xl border border-line bg-white p-5 shadow-md shadow-accent/10">
       <div>

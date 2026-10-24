@@ -1,6 +1,18 @@
-import { plans } from '../data/plans'
+import useApi from '../hooks/useApi'
 
 export default function MembershipSection() {
+  const { data: plans, error } = useApi('/api/plans')
+
+  if (error || !plans) {
+    return (
+      <section id="membership" className="mx-auto max-w-[1100px] px-5 py-16">
+        <p className="text-muted">
+          {error ? 'Could not load plans.' : 'Loading plans...'}
+        </p>
+      </section>
+    )
+  }
+
   return (
     <section
       id="membership"
@@ -35,8 +47,11 @@ export default function MembershipSection() {
                 plan.featured ? 'text-pink' : 'text-accent'
               }`}
             >
-              {plan.price}
-              <span className="font-body text-base font-normal opacity-70"> /month</span>
+              R{plan.price}
+              <span className="font-body text-base font-normal opacity-70">
+                {' '}
+                /month
+              </span>
             </p>
             <p className={`mb-5 ${plan.featured ? 'text-white/80' : 'text-muted'}`}>
               {plan.tagline}
@@ -46,7 +61,9 @@ export default function MembershipSection() {
                 <li key={feature}>
                   <span
                     aria-hidden="true"
-                    className={`mr-2 font-bold ${plan.featured ? 'text-pink' : 'text-accent'}`}
+                    className={`mr-2 font-bold ${
+                      plan.featured ? 'text-pink' : 'text-accent'
+                    }`}
                   >
                     ✓
                   </span>
