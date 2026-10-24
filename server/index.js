@@ -1,7 +1,9 @@
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
+import { toNodeHandler, fromNodeHeaders } from 'better-auth/node'
 import { pool } from './db.js'
+import { auth } from './auth.js'
 import contentRouter from './routes/content.js'
 
 const app = express()
@@ -11,28 +13,43 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',
     credentials: true,
-  }),
+  })
 )
+
+// Auth must come BEFORE express.json()
+app.all('/api/auth/*splat', toNodeHandler(auth))
+
 app.use(express.json())
 
-// Is the server alive?
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
-// Can the server talk to the database?
-app.get('/api/db-check', async (req, res) => {
-  const result = await pool.query('SELECT NOW() AS now')
-  res.json(result.rows[0])
+app.get('/api/db-check', async (req, res, next) => {
+  try {
+    const result = await pool.query('SELECT NOW() AS now')
+    res.json({ connected: true, time: result.rows[0].now })
+  } catch (err) {
+    next(err)
+  }
 })
 
-// Our data routes: /api/journeys, /api/classes, /api/trainers, /api/plans
+app.get('/api/me', async (req, res, next) => {
+  try {
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(req.headers),
+    })
+    res.json(session)
+  } catch (err) {
+    next(err)
+  }
+})
+
 app.use('/api', contentRouter)
 
-// If any route throws, send a JSON error instead of crashing
 app.use((err, req, res, next) => {
   console.error(err)
-  res.status(500).json({ error: 'Something went wrong' })
+  res.status(500).json({ error: 'Something went wrong on the server' })
 })
 
 app.listen(PORT, () => {
