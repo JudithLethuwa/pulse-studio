@@ -4,7 +4,8 @@ DROP TABLE IF EXISTS classes, trainers, plans, journeys CASCADE;
 CREATE TABLE journeys (
   id TEXT PRIMARY KEY,
   label TEXT NOT NULL,
-  tag_class TEXT NOT NULL
+  tag_class TEXT NOT NULL,
+  position INTEGER NOT NULL
 );
 
 CREATE TABLE classes (

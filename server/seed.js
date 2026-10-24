@@ -11,10 +11,10 @@ async function seed() {
   await pool.query(schema)
 
   // 2. Fill them with the data from the three data files
-  for (const j of journeys) {
+    for (const [index, j] of journeys.entries()) {
     await pool.query(
-      'INSERT INTO journeys (id, label, tag_class) VALUES ($1, $2, $3)',
-      [j.id, j.label, j.tagClass],
+      'INSERT INTO journeys (id, label, tag_class, position) VALUES ($1, $2, $3, $4)',
+      [j.id, j.label, j.tagClass, index + 1],
     )
   }
 
