@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://pulse-studio-4ejq.onrender.com/api/:path*"
+    }
+  ]
+}
