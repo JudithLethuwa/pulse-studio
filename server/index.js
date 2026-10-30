@@ -5,6 +5,8 @@ import { toNodeHandler, fromNodeHeaders } from 'better-auth/node'
 import { pool } from './db.js'
 import { auth } from './auth.js'
 import contentRouter from './routes/content.js'
+import ordersRouter from './routes/orders.js'
+import { stripeWebhook } from './routes/webhook.js'
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -18,6 +20,13 @@ app.use(
 
 // Auth must come BEFORE express.json()
 app.all('/api/auth/*splat', toNodeHandler(auth))
+
+// Stripe webhook needs the RAW body, so it must also come BEFORE express.json()
+app.post(
+  '/api/webhooks/stripe',
+  express.raw({ type: 'application/json' }),
+  stripeWebhook
+)
 
 app.use(express.json())
 
@@ -46,6 +55,7 @@ app.get('/api/me', async (req, res, next) => {
 })
 
 app.use('/api', contentRouter)
+app.use('/api/orders', ordersRouter)
 
 app.use((err, req, res, next) => {
   console.error(err)

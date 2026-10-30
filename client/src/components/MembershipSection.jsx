@@ -1,7 +1,45 @@
+import { useState } from 'react'
 import useApi from '../hooks/useApi'
+import { authClient } from '../lib/auth-client'
 
 export default function MembershipSection() {
   const { data: plans, error } = useApi('/api/plans')
+  const { data: session } = authClient.useSession()
+  const [busyPlanId, setBusyPlanId] = useState(null)
+  const [message, setMessage] = useState('')
+
+  async function startCheckout(planId) {
+    setMessage('')
+
+    if (!session) {
+      setMessage('Please sign in first, then choose your plan.')
+      return
+    }
+
+    setBusyPlanId(planId)
+    try {
+      // We only send the plan id. The server looks up the real price itself.
+      const res = await fetch('/api/orders/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ planId }),
+      })
+
+      if (res.status === 401) {
+        setMessage('Please sign in first, then choose your plan.')
+        setBusyPlanId(null)
+        return
+      }
+      if (!res.ok) throw new Error('Checkout failed')
+
+      const { url } = await res.json()
+      window.location.href = url // go to Stripe's hosted checkout page
+    } catch {
+      setMessage('Could not start checkout. Please try again.')
+      setBusyPlanId(null)
+    }
+  }
 
   if (error || !plans) {
     return (
@@ -25,6 +63,12 @@ export default function MembershipSection() {
       <p className="mt-2 mb-8 max-w-[60ch] text-muted">
         Simple monthly plans. No joining fee, cancel any time.
       </p>
+
+      {message && (
+        <p role="alert" className="mb-6 rounded-lg bg-blush px-4 py-3 font-semibold text-ink">
+          {message}
+        </p>
+      )}
 
       <div className="flex flex-wrap justify-center gap-6">
         {plans.map((plan) => (
@@ -71,16 +115,19 @@ export default function MembershipSection() {
                 </li>
               ))}
             </ul>
-            <a
-              href="#contact"
-              className={`rounded-full px-6 py-3 text-center font-semibold ${
+            <button
+              type="button"
+              aria-label={`Join ${plan.name}`}
+              disabled={busyPlanId !== null}
+              onClick={() => startCheckout(plan.id)}
+              className={`rounded-full px-6 py-3 text-center font-semibold disabled:opacity-60 ${
                 plan.featured
                   ? 'bg-pink text-ink hover:bg-white'
                   : 'bg-accent text-white hover:bg-accent-dark'
               }`}
             >
-              Choose {plan.name}
-            </a>
+              {busyPlanId === plan.id ? 'Taking you to Stripe...' : 'Join now'}
+            </button>
           </article>
         ))}
       </div>
